@@ -2,10 +2,8 @@ package edu.southhills.filesharedemo;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,8 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,22 +53,16 @@ public class MainActivity extends AppCompatActivity {
             int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
             returnCursor.moveToFirst();
 
-            String fileInfo = returnCursor.getString(nameIndex) +
+            // build string with data from the cursor
+            String fileInfo = "FileName:\n" + returnCursor.getString(nameIndex) +
                     "\n" + returnCursor.getLong(sizeIndex) + " bytes";
 
             TextView tvFileInfo = findViewById(R.id.tvFileInfo);
             tvFileInfo.setText(fileInfo);
 
-            Bitmap imageBitmap = null;
-            try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), returnUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            // display returned image
             ImageView ivThumbNail = findViewById(R.id.imgFileThumbNail);
-            ivThumbNail.setImageBitmap(imageBitmap);
-//            ivThumbNail.setImageURI(returnUri);
+            ivThumbNail.setImageURI(returnUri);
 
         }
     }
